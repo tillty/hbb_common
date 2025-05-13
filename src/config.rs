@@ -18,6 +18,7 @@ use serde_derive::{Deserialize, Serialize};
 use serde_json;
 use sodiumoxide::base64;
 use sodiumoxide::crypto::sign;
+use maplit::hashmap;
 
 use crate::{
     compress::{compress, decompress},
@@ -66,14 +67,24 @@ lazy_static::lazy_static! {
     pub static ref OVERWRITE_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref DEFAULT_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref OVERWRITE_DISPLAY_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = {
-        let mut m = HashMap::default();
-        m.insert("show-scam-warning".to_string(), "N".to_string());
-        RwLock::new(m)
-    };
+    pub static ref DEFAULT_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = RwLock::new(
+        hashmap! {
+            "show-scam-warning".to_string()     => "N".to_string(),
+            "disable-floating-window".to_string() => "Y".to_string(),
+        }
+    );
     pub static ref OVERWRITE_LOCAL_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
     pub static ref HARD_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
-    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = Default::default();
+    pub static ref BUILTIN_SETTINGS: RwLock<HashMap<String, String>> = RwLock::new(
+        hashmap! {
+            "hide-security-settings".to_string()             => "Y".to_string(),
+            "hide-network-settings".to_string()              => "Y".to_string(),
+            "hide-server-settings".to_string()               => "Y".to_string(),
+            "hide-proxy-settings".to_string()                => "Y".to_string(),
+            "hide-websocket-settings".to_string()            => "Y".to_string(),
+            "hide-remote-printer-settings".to_string()       => "Y".to_string(),
+        }
+    );
 }
 
 lazy_static::lazy_static! {
